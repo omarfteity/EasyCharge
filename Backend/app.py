@@ -54,7 +54,7 @@ class emissian_stats(db.Model):
     Vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), nullable=False)
     co2_saved_kg = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-
+quit(),
 migrate = Migrate(app, db)
 
 auth_bp = Blueprint('auth', __name__)
