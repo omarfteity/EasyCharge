@@ -1,12 +1,13 @@
-from flask import Flask, request, jsonify
-from config import Config
-from werkzeug.security import generate_password_hash, check_password_hash
-from app.services.auth_service import register_user, authenticate_user
-from flask import Blueprint
-from app.models import User, Vehicle, db
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from flask_migrate import Migrate
+
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flask_user:password@localhost:5432/flask_app'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
 class User(db.Model):
     user_id = db.Column(db.Integer,unique=True, primary_key=True)
@@ -54,6 +55,7 @@ class emissian_stats(db.Model):
     co2_saved_kg = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
 
+migrate = Migrate(app, db)
 
 auth_bp = Blueprint('auth', __name__)
 
