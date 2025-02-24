@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from config import Config
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.services.auth_service import register_user, authenticate_user
-from flask import Blueprint, request, jsonify
+from flask import Blueprint
 from app.models import User, Vehicle, db
 
 app = Flask(__name__)
@@ -25,6 +25,7 @@ class Vehicle(db.Model):
     model = db.Column(db.String(100), nullable=False)
     battery_status = db.Column(db.integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    mileage = db.Column(db.Integer, nullable=False)
 
 class diagnostic(db.Model):
     diagnostic_id = db.Column(db.Integer, primary_key=True)
@@ -63,7 +64,7 @@ def signup():
     password = data.get('password')
 
     if not email or not password:
-        return jsonify({'error': 'Email and password are required'})
+        return jsonify({'error': 'Email and password are required'}), 400
 
     user = register_user(email, password)
     return jsonify({'message': 'User registered successfully', 'user_id': user.id})
@@ -76,7 +77,7 @@ def login():
 
     user = authenticate_user(email, password)
     if user:
-        return jsonify({'message': 'Login successful', 'user_id': user.id}), 200
+        return jsonify({'message': 'Login successful', 'user_id': user.id}),
     else:
         return jsonify({'error': 'Invalid credentials'}),
 
@@ -98,4 +99,3 @@ def diagnose():
     return jsonify({'diagnosis': result})
 
 
-    
