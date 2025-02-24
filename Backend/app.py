@@ -1,12 +1,9 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from config import Config
-from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.services.auth_service import register_user, authenticate_user
 from flask import Blueprint, request, jsonify
 from app.models import User, Vehicle, db
-from app.services.auth_service import register_user, authenticate_user
 
 app = Flask(__name__)
 app.config.from_object(Config)
