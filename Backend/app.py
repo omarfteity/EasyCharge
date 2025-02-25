@@ -1,9 +1,12 @@
-from flask import Flask
+from flask import Flask,request,jsonify,Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
 from sqlalchemy.dialects.postgresql import JSON, ARRAY, UUID
 import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
+'''from usersettings import register_user, authenticate_user'''
+
 
 
 app = Flask(__name__)
@@ -70,7 +73,7 @@ def signup():
     if not email or not password:
         return jsonify({'error': 'Email and password are required'}), 400
 
-    user = register_user(email, password)
+    user = register_user(user_id, email, password)
     return jsonify({'message': 'User registered successfully', 'user_id': user.id})
 
 @auth_bp.route('/login', methods=['POST'])
@@ -104,7 +107,7 @@ def diagnose():
 
 @diagnostics_bp.route('/diagnostics', methods=['GET'])  
 def get_diagnostics():
-    diagnostics = Diagnostic.query.all()
+    diagnostics = diagnostic.query.all()
     diagnostics_list = []
     for diagnostic in diagnostics:
         diagnostics_list.append({
