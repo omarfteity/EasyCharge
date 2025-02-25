@@ -10,8 +10,7 @@ import os
 
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flask_user:password@localhost:5432/flask_app'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flask_user:password@localhost:5432/flask_app'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
